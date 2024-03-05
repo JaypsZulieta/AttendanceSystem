@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GradeLevel{
+  G11
+  G12
+}
+
+enum Sex{
+  female
+  male
+}
+
+enum Role{
+  guard
+  admin
+}
+
+model Tracks{
+  id Int @id @default(autoincrement())
+  trackName String @unique
+  timeAdded DateTime @default(now())
+  strands Strands[]
+}
+
+model Strands{
+  id Int @id @default(autoincrement())
+  strandName String @unique
+  trackId Int
+  timeAdded DateTime @default(now())
+  track Tracks @relation(fields: [trackId], references: [id])
+  sections Sections[]
+}
+
+model Sections{
+  id Int @id @default(autoincrement())
+  sectionName String @unique
+  gradeLevel GradeLevel
+  strandId Int
+  timeAdded DateTime @default(now())
+  strand Strands @relation(fields: [strandId], references: [id])
+  students Students[]
+}
+
+model Students{
+  lrn String @id @db.VarChar(12)
+  firstname String
+  middlename String?
+  lastname String
+  sex Sex
+  guardianPhonenumber String
+  profileImageURL String @default("https://robohash.org/student")
+  sectionId Int
+  timeAdded DateTime @default(now())
+  section Sections @relation(fields: [sectionId], references: [id])
+  entrances StudentEntrances[]
+}
+
+model Guards{
+  id String @id @default(uuid())
+  email String @unique
+  encodedPassword String
+  firstname String
+  middlename String?
+  lastname String
+  sex Sex
+  role Role @default(guard)
+  profileImageURL String @default("https://robohash.org/guard")
+  isActive Boolean @default(true)
+  timeAdded DateTime @default(now())
+  studentEntrances StudentEntrances[]
+  studentExits StudentExits[]
+}
+
+model StudentEntrances {
+  id Int @id @default(autoincrement())
+  timeEntered DateTime @default(now())
+  studentLrn String
+  guardId String
+  student Students @relation(fields: [studentLrn], references: [lrn])
+  checkedBy Guards @relation(fields: [guardId], references: [id])
+  studentExit StudentExits[]
+}
+
+model StudentExits {
+  id Int @id @default(autoincrement())
+  entranceId Int
+  timeExited DateTime @default(now())
+  guardId String
+  checkedBy Guards @relation(fields: [guardId], references: [id])
+  studentEntrance StudentEntrances @relation(fields: [entranceId], references: [id])
+}
