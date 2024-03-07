@@ -21,12 +21,14 @@ export class GuardServiceImpl implements GuardService{
     }
 
     public async registerGuard(entity: Guard): Promise<Guard> {
+        entity.id = undefined;
         entity.role = "guard";
         entity.encodedPassword = await this.passwordEncoder.encode(entity.encodedPassword);
         return await this.guardRepository.save(entity);
     }
 
     public async registerAdmin(entity: Guard): Promise<Guard> {
+        entity.id = undefined;
         entity.role = "admin";
         entity.encodedPassword = await this.passwordEncoder.encode(entity.encodedPassword);
         return await this.guardRepository.save(entity);
