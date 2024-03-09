@@ -21,6 +21,7 @@ export interface GuardService{
     findEntrancesCheckedByGuardId(guardId: string, paginationOptions: PaginationOptions): Promise<PaginatedContent<StudentEntrance>>;
     findExitsCheckedByGuardId(guardId: string, paginationOptions: PaginationOptions): Promise<PaginatedContent<StudentExit>>;
     existByEmail(email: string): Promise<boolean>;
+    findById(id: string): Promise<Guard>;
     findByEmail(email: string): Promise<Guard>;
     findGuardByGender(gender: "male" | "female", paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;
     findByGuardFirstname(firstname: string, paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;

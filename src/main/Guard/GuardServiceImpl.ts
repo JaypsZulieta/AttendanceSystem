@@ -20,6 +20,10 @@ export class GuardServiceImpl implements GuardService{
         this.passwordEncoder = dependencies.passwordEncoder;
     }
 
+    public async findById(id: string): Promise<Guard> {
+        return await this.guardRepository.findByPk(id);
+    }
+
     public async registerGuard(entity: Guard): Promise<Guard> {
         entity.id = undefined;
         entity.role = "guard";
