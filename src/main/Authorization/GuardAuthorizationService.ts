@@ -19,7 +19,7 @@ export class GuardAuthorizationService implements AuthorizationService{
         this.jwtSecretKey = dependencies.jwtSecretKey;
     }
 
-    public async authorizeAsAdmin(token: string): Promise<boolean> {
+    public async checkIfAdmin(token: string): Promise<boolean> {
         try{
             const guardPayload = this.tokenService.validateAndDecodeToken(token, this.jwtSecretKey);
             const guard = await this.guardService.findById(guardPayload.id);
@@ -30,7 +30,7 @@ export class GuardAuthorizationService implements AuthorizationService{
         }
     }
 
-    public async authorizeAsResourseOwner(token: string, resourceOwnerId: string): Promise<boolean> {
+    public async checkIfResourseOwner(token: string, resourceOwnerId: string): Promise<boolean> {
         try{
             const guardPayload = this.tokenService.validateAndDecodeToken(token, this.jwtSecretKey);
             const guard = await this.guardService.findById(guardPayload.id);
