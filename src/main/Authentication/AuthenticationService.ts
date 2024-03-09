@@ -1,3 +1,4 @@
-export interface AuthenticationService<TCred, TAuth>{
-    authenticate(credentials: TCred): Promise<TAuth>;
-}
+export interface AuthenticationService<TCredentials, TAuthentication>{
+    authentication(credentials: TCredentials): Promise<TAuthentication>;
+} 
+
