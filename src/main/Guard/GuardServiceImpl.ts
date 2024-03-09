@@ -95,7 +95,7 @@ export class GuardServiceImpl implements GuardService{
     }
 
     public async existByEmail(email: string): Promise<boolean> {
-        return await this.existByEmail(email);
+        return await this.guardRepository.existByEmail(email);
     }
 
     public async findByEmail(email: string): Promise<Guard> {
