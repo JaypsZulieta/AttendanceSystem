@@ -71,7 +71,7 @@ model Students{
 model Guards{
   id String @id @default(uuid())
   email String @unique
-  encodedPassword String
+  password String
   firstname String
   middlename String?
   lastname String

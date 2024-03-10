@@ -2,7 +2,7 @@ export type Guard = {
     id?: string,
     isActive?: boolean,
     email: string,
-    encodedPassword: string,
+    password: string,
     firstname: string,
     middlename?: string | null,
     lastname: string,

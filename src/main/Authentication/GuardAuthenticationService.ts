@@ -40,7 +40,7 @@ export class GuardAuthenticationService implements AuthenticationService<
         const guard = await this.guardService.findByEmail(credentials.email);
         const passwordIsIncorrect = !await this.passwordValidator.validatePassword({
             plainTextPassword: credentials.password,
-            encodedPassword: guard.encodedPassword
+            encodedPassword: guard.password
         });
         if(passwordIsIncorrect) 
             throw new IncorrectEmailOrPasswordError();
