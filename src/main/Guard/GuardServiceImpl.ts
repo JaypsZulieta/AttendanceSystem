@@ -1,9 +1,12 @@
 import { PaginatedContent } from "../../lib/repositories/PaginatedContent";
 import { PaginationOptions } from "../../lib/repositories/PaginationOptions";
+import { ThereIsAlreadyARootAdminError } from "../../routes/ThereIsAlreadyARootAdminError";
 import { StudentEntrance } from "../Entrance/StudentEntrance";
 import { StudentExit } from "../Exits/StudentExit";
 import { PasswodEncoder } from "../PasswordEncoder/PasswordEncoder";
+import { EmailUnavailableError } from "./EmailUnavailableError";
 import { Guard } from "./Guard";
+import { GuardByIdDoesNotExistError } from "./GuardByIdDoesNotExistError";
 import { GuardRepository } from "./GuardRepository";
 import { GuardService } from "./GuardService";
 
@@ -20,6 +23,19 @@ export class GuardServiceImpl implements GuardService{
         this.passwordEncoder = dependencies.passwordEncoder;
     }
 
+    public async existById(id: string): Promise<boolean> {
+        return await this.guardRepository.existByPk(id);
+    }
+
+    public async updateGuard(entity: Guard): Promise<Guard> {
+        if(!entity.id || !await this.existById(entity.id))
+            throw new GuardByIdDoesNotExistError(entity.id as string);
+        const existingGuard = await this.findGuardByEmail(entity.email);
+        if(existingGuard.id !== entity.id && await this.existByEmail(entity.email))
+            throw new EmailUnavailableError(entity.email);
+        return await this.guardRepository.save(entity);
+    }
+
     public async findById(id: string): Promise<Guard> {
         return await this.guardRepository.findByPk(id);
     }
@@ -31,7 +47,9 @@ export class GuardServiceImpl implements GuardService{
         return await this.guardRepository.save(entity);
     }
 
-    public async registerAdmin(entity: Guard): Promise<Guard> {
+    public async registerRootAdmin(entity: Guard): Promise<Guard> {
+        if(await this.countAllGuards() > 0)
+            throw new ThereIsAlreadyARootAdminError();
         entity.id = undefined;
         entity.role = "admin";
         entity.password = await this.passwordEncoder.encode(entity.password);

@@ -6,7 +6,7 @@ import { Guard } from "./Guard";
 
 export interface GuardService{
     registerGuard(entity: Guard): Promise<Guard>;
-    registerAdmin(entity: Guard): Promise<Guard>;
+    registerRootAdmin(entity: Guard): Promise<Guard>;
     findAllGuards(paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;
     findAllActiveGuards(paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;
     findAllDisabledGuards(paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;
@@ -14,6 +14,7 @@ export interface GuardService{
     findGuardByEmail(email: string): Promise<Guard>;
     countAllGuards(): Promise<number>;
     countAllActiveGuards(): Promise<number>;
+    updateGuard(entity: Guard): Promise<Guard>;
     findAllAdmins(paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;
     findAllNonAdmins(paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;
     countEntrancesCheckedByGuardId(guardId: string): Promise<number>;
@@ -21,6 +22,7 @@ export interface GuardService{
     findEntrancesCheckedByGuardId(guardId: string, paginationOptions: PaginationOptions): Promise<PaginatedContent<StudentEntrance>>;
     findExitsCheckedByGuardId(guardId: string, paginationOptions: PaginationOptions): Promise<PaginatedContent<StudentExit>>;
     existByEmail(email: string): Promise<boolean>;
+    existById(id: string): Promise<boolean>;
     findById(id: string): Promise<Guard>;
     findByEmail(email: string): Promise<Guard>;
     findGuardByGender(gender: "male" | "female", paginationOptions: PaginationOptions): Promise<PaginatedContent<Guard>>;

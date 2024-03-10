@@ -10,11 +10,9 @@ export const guardRoute = new Hono();
 guardRoute.post("/root", async (c) => {
     const entity = await c.req.json() as Guard;
     const plainTextPassword = entity.password;
-    if(await guardService.countAllGuards() > 0)
-        throw new ThereIsAlreadyARootAdminError();
-    const guard = await guardService.registerAdmin(entity);
+    const { email } = await guardService.registerRootAdmin(entity);
     const authentication = await guardAuthenticationService.authentication({
-        email: guard.email,
+        email: email,
         password: plainTextPassword
     });
     const { user, ...tokens } = authentication;
