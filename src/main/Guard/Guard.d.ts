@@ -7,7 +7,7 @@ export type Guard = {
     middlename?: string | null,
     lastname: string,
     sex: "male" | "female",
-    role: "guard" | "admin",
+    role?: "guard" | "admin",
     profileImageURL?: string,
     timeAdded?: Date
 }
