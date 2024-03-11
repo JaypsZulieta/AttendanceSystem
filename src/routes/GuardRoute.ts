@@ -8,14 +8,11 @@ export const guardRoute = new Hono();
 
 guardRoute.post("/root", async (c) => {
     const entity = await c.req.json() as Guard;
-    const plainTextPassword = entity.password;
+    const password = entity.password;
     const { email } = await guardService.registerRootAdmin(entity);
-    const authentication = await guardAuthenticationService.authentication({
-        email: email,
-        password: plainTextPassword
-    });
+    const authentication = await guardAuthenticationService.authentication({ email, password });
     const { user, ...tokens } = authentication;
-    const { password, ...guardPublicInfo } = user;
+    const { password: encodedPassword, ...guardPublicInfo } = user;
     c.status(201);
     return c.json({ user: guardPublicInfo, ...tokens });
 });
