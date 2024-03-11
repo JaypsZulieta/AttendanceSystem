@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { guardRoute } from "./routes/GuardRoute";
-import { UnauthorizedError } from "./routes/UnauthorizedError";
+import { UnauthorizedError } from "./errors/UnauthorizedError";
 import { IncorrectEmailOrPasswordError } from "./main/Authentication/IncorrectEmailOrPasswordError";
 
 const app = new Hono();

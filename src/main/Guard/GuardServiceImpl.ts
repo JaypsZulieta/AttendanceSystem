@@ -1,6 +1,6 @@
 import { PaginatedContent } from "../../lib/repositories/PaginatedContent";
 import { PaginationOptions } from "../../lib/repositories/PaginationOptions";
-import { ThereIsAlreadyARootAdminError } from "../../routes/ThereIsAlreadyARootAdminError";
+import { ThereIsAlreadyARootAdminError } from "../../errors/ThereIsAlreadyARootAdminError";
 import { StudentEntrance } from "../Entrance/StudentEntrance";
 import { StudentExit } from "../Exits/StudentExit";
 import { PasswodEncoder } from "../PasswordEncoder/PasswordEncoder";
