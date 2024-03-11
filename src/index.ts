@@ -7,6 +7,7 @@ import { authRoute } from "./routes/AuthRoute";
 import { EmailUnavailableError } from "./main/Guard/EmailUnavailableError";
 import { JsonWebTokenError } from "jsonwebtoken";
 import { AuthHeaderMissingError } from "./middlewares/AuthHeaderMissingError";
+import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 
 const app = new Hono();
 
@@ -19,6 +20,9 @@ app.route("/api/v1/auth", authRoute);
 app.onError(async (err, c) => {
     const { message } = err;
     switch(true){
+        case err instanceof PrismaClientValidationError:
+            c.status(400);
+            return c.json({ message: 'bad request'});
         case err instanceof UnauthorizedError:
             c.status(401);
             return c.json({ message });
