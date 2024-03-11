@@ -1,7 +1,6 @@
 import { Context, Hono } from "hono";
 import { Guard } from "../main/Guard/Guard";
 import { guardAuthenticationService, guardAuthorizationService, guardService } from "../services";
-import { ThereIsAlreadyARootAdminError } from "./ThereIsAlreadyARootAdminError";
 import { tokenMiddleware } from "../middlewares/tokenMiddleware";
 import { UnauthorizedError } from "./UnauthorizedError";
 
