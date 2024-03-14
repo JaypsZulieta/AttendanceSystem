@@ -19,6 +19,18 @@ export class GuardAuthorizationService implements AuthorizationService{
         this.jwtSecretKey = dependencies.jwtSecretKey;
     }
 
+    public async checkIfUser(token: string): Promise<boolean> {
+        try{
+            const payload = this.tokenService.validateAndDecodeToken(token, this.jwtSecretKey);
+            if(!await this.guardService.existById(payload.id))
+                return false;
+            return true;
+        }
+        catch(err){
+            return false;
+        }
+    }
+
     public async checkIfAdmin(token: string): Promise<boolean> {
         try{
             const guardPayload = this.tokenService.validateAndDecodeToken(token, this.jwtSecretKey);

@@ -26,3 +26,28 @@ guardRoute.post("/", tokenMiddleware, async (c: Context) => {
     c.status(201);
     return c.json(guard);
 });
+
+guardRoute.get("/", tokenMiddleware, async (c: Context) => {
+    const token = c.get('token') as string;
+    const isUser = await guardAuthorizationService.checkIfUser(token);
+    if(!isUser) throw new UnauthorizedError();
+
+    let page = 1;
+    let limit = 10;
+    const pageQuery = c.req.query('page');
+    const limitQuery = c.req.query('limit');
+    
+    if(pageQuery && isNaN(Number(pageQuery)))
+        page = 1;
+    else if (pageQuery && !isNaN(Number(pageQuery)))
+        page = Number(pageQuery);
+
+    if(limitQuery && isNaN(Number(limitQuery)))
+        limit = 10;
+    else if (limitQuery && !isNaN(Number(limitQuery)))
+        limit = Number(limitQuery);
+    
+    const { content, ...pageStats } = await guardService.findAllGuards({ page, limit });
+    const guards = content.map(({ password, ...guard }) => guard);
+    return c.json({ ...pageStats, guards });
+});
